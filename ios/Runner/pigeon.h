@@ -21,7 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 NSObject<FlutterMessageCodec> *PigeonApiGetCodec(void);
 
 @protocol PigeonApi
-- (void)testMessageFromFlutter:(NSString *)fromFlutter completion:(void (^)(Response *_Nullable, FlutterError *_Nullable))completion;
+/// @return `nil` only when `error != nil`.
+- (nullable Response *)testMessageFromFlutter:(NSString *)fromFlutter error:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void PigeonApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<PigeonApi> *_Nullable api);

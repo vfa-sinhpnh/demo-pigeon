@@ -16,13 +16,13 @@ import Flutter
 }
 
 public class MyAPI: PigeonApi {
-    func testMessage(fromFlutter: String, status: Bool) throws -> Response {
+    func testMessage(fromFlutter: String) throws -> Response {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         if(emailPredicate.evaluate(with: fromFlutter)){
-            return Response(response: "Email correct")
+        return Response(response: "Email correct")
         }else{
-            return Response(response: "Invalid email")
+        return Response(response: "Invalid email")
         }
     }
 }

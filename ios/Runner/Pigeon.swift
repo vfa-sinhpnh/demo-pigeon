@@ -36,7 +36,7 @@ struct Response {
   var response: String? = nil
 
   static func fromList(_ list: [Any]) -> Response? {
-    let response = list[0] as! String? 
+    let response = list[0] as! String?
 
     return Response(
       response: response
@@ -48,7 +48,6 @@ struct Response {
     ]
   }
 }
-
 private class PigeonApiCodecReader: FlutterStandardReader {
   override func readValue(ofType type: UInt8) -> Any? {
     switch type {
@@ -87,7 +86,7 @@ class PigeonApiCodec: FlutterStandardMessageCodec {
 
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
 protocol PigeonApi {
-  func testMessage(fromFlutter: String, completion: @escaping (Result<Response, Error>) -> Void)
+  func testMessage(fromFlutter: String) throws -> Response
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -101,13 +100,11 @@ class PigeonApiSetup {
       testMessageChannel.setMessageHandler { message, reply in
         let args = message as! [Any]
         let fromFlutterArg = args[0] as! String
-        api.testMessage(fromFlutter: fromFlutterArg) { result in
-          switch result {
-            case .success(let res):
-              reply(wrapResult(res))
-            case .failure(let error):
-              reply(wrapError(error))
-          }
+        do {
+          let result = try api.testMessage(fromFlutter: fromFlutterArg)
+          reply(wrapResult(result))
+        } catch {
+          reply(wrapError(error))
         }
       }
     } else {
