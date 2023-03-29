@@ -34,21 +34,17 @@ private func wrapError(_ error: Any) -> [Any?] {
 /// Generated class from Pigeon that represents data sent in messages.
 struct Response {
   var response: String? = nil
-  var status: Bool? = nil
 
   static func fromList(_ list: [Any]) -> Response? {
     let response = list[0] as! String? 
-    let status = list[1] as! Bool? 
 
     return Response(
-      response: response,
-      status: status
+      response: response
     )
   }
   func toList() -> [Any?] {
     return [
       response,
-      status,
     ]
   }
 }
@@ -91,7 +87,7 @@ class PigeonApiCodec: FlutterStandardMessageCodec {
 
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
 protocol PigeonApi {
-  func testMessage(fromFlutter: String, status: Bool, completion: @escaping (Result<Response, Error>) -> Void)
+  func testMessage(fromFlutter: String, completion: @escaping (Result<Response, Error>) -> Void)
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -105,8 +101,7 @@ class PigeonApiSetup {
       testMessageChannel.setMessageHandler { message, reply in
         let args = message as! [Any]
         let fromFlutterArg = args[0] as! String
-        let statusArg = args[1] as! Bool
-        api.testMessage(fromFlutter: fromFlutterArg, status: statusArg) { result in
+        api.testMessage(fromFlutter: fromFlutterArg) { result in
           switch result {
             case .success(let res):
               reply(wrapResult(res))

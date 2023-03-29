@@ -13,17 +13,15 @@ NS_ASSUME_NONNULL_BEGIN
 @class Response;
 
 @interface Response : NSObject
-+ (instancetype)makeWithResponse:(nullable NSString *)response
-    status:(nullable NSNumber *)status;
++ (instancetype)makeWithResponse:(nullable NSString *)response;
 @property(nonatomic, copy, nullable) NSString * response;
-@property(nonatomic, strong, nullable) NSNumber * status;
 @end
 
 /// The codec used by PigeonApi.
 NSObject<FlutterMessageCodec> *PigeonApiGetCodec(void);
 
 @protocol PigeonApi
-- (void)testMessageFromFlutter:(NSString *)fromFlutter status:(NSNumber *)status completion:(void (^)(Response *_Nullable, FlutterError *_Nullable))completion;
+- (void)testMessageFromFlutter:(NSString *)fromFlutter completion:(void (^)(Response *_Nullable, FlutterError *_Nullable))completion;
 @end
 
 extern void PigeonApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<PigeonApi> *_Nullable api);

@@ -11,17 +11,13 @@ import 'package:flutter/services.dart';
 class Response {
   Response({
     this.response,
-    this.status,
   });
 
   String? response;
 
-  bool? status;
-
   Object encode() {
     return <Object?>[
       response,
-      status,
     ];
   }
 
@@ -29,7 +25,6 @@ class Response {
     result as List<Object?>;
     return Response(
       response: result[0] as String?,
-      status: result[1] as bool?,
     );
   }
 }
@@ -67,12 +62,12 @@ class PigeonApi {
 
   static const MessageCodec<Object?> codec = _PigeonApiCodec();
 
-  Future<Response> testMessage(String arg_fromFlutter, bool arg_status) async {
+  Future<Response> testMessage(String arg_fromFlutter) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.PigeonApi.testMessage', codec,
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
-        await channel.send(<Object?>[arg_fromFlutter, arg_status]) as List<Object?>?;
+        await channel.send(<Object?>[arg_fromFlutter]) as List<Object?>?;
     if (replyList == null) {
       throw PlatformException(
         code: 'channel-error',

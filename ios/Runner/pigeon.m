@@ -28,17 +28,14 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
 @end
 
 @implementation Response
-+ (instancetype)makeWithResponse:(nullable NSString *)response
-    status:(nullable NSNumber *)status {
++ (instancetype)makeWithResponse:(nullable NSString *)response {
   Response* pigeonResult = [[Response alloc] init];
   pigeonResult.response = response;
-  pigeonResult.status = status;
   return pigeonResult;
 }
 + (Response *)fromList:(NSArray *)list {
   Response *pigeonResult = [[Response alloc] init];
   pigeonResult.response = GetNullableObjectAtIndex(list, 0);
-  pigeonResult.status = GetNullableObjectAtIndex(list, 1);
   return pigeonResult;
 }
 + (nullable Response *)nullableFromList:(NSArray *)list {
@@ -47,7 +44,6 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
 - (NSArray *)toList {
   return @[
     (self.response ?: [NSNull null]),
-    (self.status ?: [NSNull null]),
   ];
 }
 @end
@@ -107,12 +103,11 @@ void PigeonApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<PigeonA
         binaryMessenger:binaryMessenger
         codec:PigeonApiGetCodec()];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(testMessageFromFlutter:status:completion:)], @"PigeonApi api (%@) doesn't respond to @selector(testMessageFromFlutter:status:completion:)", api);
+      NSCAssert([api respondsToSelector:@selector(testMessageFromFlutter:completion:)], @"PigeonApi api (%@) doesn't respond to @selector(testMessageFromFlutter:completion:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         NSArray *args = message;
         NSString *arg_fromFlutter = GetNullableObjectAtIndex(args, 0);
-        NSNumber *arg_status = GetNullableObjectAtIndex(args, 1);
-        [api testMessageFromFlutter:arg_fromFlutter status:arg_status completion:^(Response *_Nullable output, FlutterError *_Nullable error) {
+        [api testMessageFromFlutter:arg_fromFlutter completion:^(Response *_Nullable output, FlutterError *_Nullable error) {
           callback(wrapResult(output, error));
         }];
       }];
