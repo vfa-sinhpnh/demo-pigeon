@@ -6,6 +6,5 @@ class Response {
 
 @HostApi()
 abstract class PigeonApi {
-  @async
   Response testMessage(String fromFlutter);
 }

@@ -36,7 +36,7 @@ struct Response {
   var response: String? = nil
 
   static func fromList(_ list: [Any]) -> Response? {
-    let response = list[0] as! String?
+    let response = list[0] as! String? 
 
     return Response(
       response: response
